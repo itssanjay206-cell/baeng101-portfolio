@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="author" content="Yalamanchili Sai Sanjay">
+<meta name="description" content="BAENG 101 English language portfolio, VIT Vellore, Fall 2026-27">
+<style>
+html{color-scheme:light}
+body{margin:0;font-family:system-ui,sans-serif}
+img{max-width:100%}
+[hidden]{display:none!important}
+body.submit #detBtn,body.submit #editBtn,body.submit #resetBtn,body.submit .drawer,body.submit .hint{display:none!important}
+</style>
+<title>BAENG 101 Portfolio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&family=Caveat:wght@600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Palette: cool off-white ground, burgundy primary, slate-teal secondary. Layout: light-first single-page site. Fixed glass nav with scroll-spy, full-bleed hero over a constellation canvas, then alternating content bands. Interactive widgets (meters, tabs, flashcards, SWOT) are the point. */
+:root{
+  --bg:#f4f3f5; --bg-2:#ffffff; --bg-3:#e9e6ec;
+  --fg:#1e1b22; --fg-2:#5f5868; --line:#d8d3dc;
+  --blue:#7a1f2e; --blue-2:#5e1623; --gold:#2f5d62; --pink:#8a4b57;
+  --accent:#7a1f2e;
+  --glow:rgba(122,31,46,.16);
+  --card:#ffffff; --card-b:#dcd6df;
+  --on-primary:#ffffff; --on-secondary:#ffffff;
+  --edit:#b3261e;
+  --display:"Cormorant Garamond","Times New Roman",Georgia,serif;
+  --body:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17141a; --bg-2:#1e1a22; --bg-3:#2a252f;
+    --fg:#efeaf0; --fg-2:#aaa2b0; --line:#363040;
+    --blue:#e3a0ab; --blue-2:#f0bcc4; --gold:#7fc1c5; --pink:#d6a8b0;
+    --accent:#e3a0ab;
+    --glow:rgba(227,160,171,.18);
+    --card:#221d27; --card-b:#3a3342;
+    --on-primary:#17141a; --on-secondary:#17141a;
+    --edit:#ff8a7a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17141a; --bg-2:#1e1a22; --bg-3:#2a252f;
+  --fg:#efeaf0; --fg-2:#aaa2b0; --line:#363040;
+  --blue:#e3a0ab; --blue-2:#f0bcc4; --gold:#7fc1c5; --pink:#d6a8b0;
+  --accent:#e3a0ab;
+  --glow:rgba(227,160,171,.18);
+  --card:#221d27; --card-b:#3a3342;
+  --on-primary:#17141a; --on-secondary:#17141a;
+  --edit:#ff8a7a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;padding-block:0;padding-inline:0;overflow-x:hidden}
+h1,h2,h3{font-family:var(--display);line-height:1.05;text-wrap:balance;margin:0;font-weight:600}
+p{margin:0}
+a{color:var(--blue)}
+button{font:inherit;color:inherit}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-2)}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px;min-width:0}
+
+/* NAV */
+nav{
+  position:fixed;left:0;right:0;top:0;z-index:20;
+  padding-top:env(safe-area-inset-top,0px);
+  background:color-mix(in srgb,var(--bg) 78%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+nav .wrap{display:flex;align-items:center;gap:10px;height:58px}
+nav .brand{font-family:var(--display);font-weight:700;font-size:20px;text-decoration:none;color:var(--fg);flex:0 0 auto}
+nav .brand b{color:var(--gold)}
+nav .links{display:flex;gap:2px;flex:1 1 auto;overflow-x:auto;scrollbar-width:none;min-width:0}
+nav .links::-webkit-scrollbar{display:none}
+nav .links a{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  color:var(--fg-2);padding:6px 10px;border-radius:999px;white-space:nowrap;
+}
+nav .links a.active{background:var(--blue);color:var(--on-primary)}
+nav .links a:hover{color:var(--fg)}
+.ibtn{
+  border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:6px 12px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;cursor:pointer;white-space:nowrap;
+}
+.ibtn:hover{border-color:var(--blue)}
+.ibtn.on{background:var(--gold);color:var(--on-secondary);border-color:var(--gold)}
+.ibtn:focus-visible,[contenteditable]:focus-visible,.goals input:focus-visible,.card:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.progress{position:fixed;left:0;top:calc(58px + env(safe-area-inset-top,0px));height:2px;width:0;background:var(--gold);z-index:21}
+.hint{display:none;color:#fff;position:fixed;bottom:calc(16px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);z-index:20;background:var(--edit);color:#fff;padding:8px 14px;border-radius:999px;font-family:var(--mono);font-size:12px;max-width:calc(100% - 32px);text-align:center}
+body.editing .hint{display:block}
+
+/* HERO */
+.hero{position:relative;padding:calc(120px + env(safe-area-inset-top,0px)) 0 80px;overflow:hidden}
+#sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .wrap{position:relative}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--card)}
+.hero .eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.hero h1{font-size:clamp(44px,8vw,88px);font-weight:600;letter-spacing:-.01em;margin:22px 0 10px}
+.hero h1 .name{color:var(--blue);font-style:italic}
+.type{font-family:var(--display);font-weight:500;font-style:italic;font-size:clamp(22px,3.4vw,32px);color:var(--fg-2);min-height:1.3em}
+.type .cur{display:inline-block;width:2px;height:1em;background:var(--gold);vertical-align:-.15em;margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p.lead{max-width:60ch;margin-top:18px;font-size:18.5px;color:var(--fg-2)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{
+  display:inline-block;text-decoration:none;font-family:var(--body);font-weight:600;font-size:15px;letter-spacing:.02em;
+  padding:12px 22px;border-radius:4px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;
+}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--on-primary);box-shadow:0 8px 30px var(--glow)}
+.btn:hover{transform:translateY(-2px)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:44px}
+.fact{border:1px solid var(--card-b);background:var(--card);border-radius:6px;padding:14px 16px}
+.fact b{display:block;font-family:var(--display);font-weight:600;font-size:24px}
+.fact .mono{display:block;margin-top:2px}
+
+/* SECTIONS */
+section{padding:72px 0}
+section:nth-of-type(even){background:var(--bg-2)}
+.head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;flex-wrap:wrap}
+.head .mono{color:var(--gold)}
+.head h2{font-size:clamp(32px,5vw,46px);font-weight:600;letter-spacing:0}
+.head{position:relative;padding-bottom:12px}
+.head::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:72px;background:var(--gold);transform-origin:left;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+section.in .head::after{width:100%}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px 36px}
+.two > *{min-width:0}
+.stack{display:grid;gap:14px}
+ul{margin:0;padding-left:20px}
+li{margin:5px 0}
+li::marker{color:var(--gold)}
+.card{border:1px solid var(--card-b);background:var(--card);border-radius:6px;padding:20px 22px;min-width:0}
+h3{font-size:18px;font-weight:700;margin-bottom:8px}
+
+/* Timeline */
+.tl{position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.tl .row{position:relative;padding:8px 0 20px}
+.tl .row::before{content:"";position:absolute;left:-24px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:3px solid var(--blue)}
+.tl .row:last-child::before{border-color:var(--gold)}
+.tl .yr{display:block;font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.08em}
+.tl b{font-family:var(--display);font-size:21px;font-weight:600}
+
+/* Meters */
+.meter{margin:12px 0}
+.meter .lbl{display:flex;justify-content:space-between;font-weight:500;margin-bottom:6px;gap:12px}
+.meter .lbl span:last-child{font-family:var(--mono);font-size:12px;color:var(--fg-2);font-variant-numeric:tabular-nums}
+.meter .bar{height:10px;border-radius:999px;background:var(--bg-3);overflow:hidden}
+.meter .bar i{display:block;height:100%;width:var(--v);border-radius:999px;background:var(--blue);transform-origin:left;animation:grow 1.2s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{border:1px solid var(--card-b);background:var(--bg-3);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:500}
+
+/* Goals */
+.goals{list-style:none;padding:0;display:grid;gap:4px}
+.goals li{margin:0}
+.goals label{display:flex;gap:12px;align-items:flex-start;padding:10px 8px;border-radius:4px;cursor:pointer;transition:background .2s}
+.goals label:hover{background:var(--bg-3)}
+.goals input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--blue);flex:0 0 auto}
+.goals input:checked + span{text-decoration:line-through;color:var(--fg-2)}
+.goalStat .big{font-family:var(--display);font-weight:600;font-size:64px;line-height:1;margin:6px 0 10px;font-variant-numeric:tabular-nums}
+.goalStat .meter .bar i{transition:width .5s cubic-bezier(.2,.8,.2,1)}
+/* Flashcards */
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.fc{perspective:900px;height:150px;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.fc .in{position:relative;width:100%;height:100%;transition:transform .55s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d}
+.fc.flipped .in{transform:rotateY(180deg)}
+.fc .f,.fc .b{position:absolute;inset:0;border-radius:6px;padding:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--card-b);display:flex;flex-direction:column;justify-content:space-between;min-width:0;overflow:hidden}
+.fc .f{background:var(--card)}
+.fc .b{background:var(--blue);color:var(--on-primary);transform:rotateY(180deg)}
+.fc .b .mono{color:var(--on-primary);opacity:.75}
+.fc .w{font-family:var(--display);font-weight:600;font-size:24px}
+.fc .d{font-size:14px;line-height:1.4}
+
+/* SWOT */
+.swot{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.swot button{text-align:left;border:1px solid var(--card-b);background:var(--card);border-radius:6px;padding:18px;cursor:pointer;transition:transform .2s,border-color .2s}
+.swot button:hover{transform:translateY(-3px);border-color:var(--blue)}
+.swot .k{font-family:var(--display);font-weight:600;font-size:44px;line-height:1}
+.swot .n{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:4px}
+.swot .x{margin-top:10px;font-size:15px;color:var(--fg-2);max-height:0;overflow:hidden;transition:max-height .35s ease}
+.swot button.open .x{max-height:200px}
+.swot button.open{border-color:var(--gold)}
+
+/* Group discussion summary */
+.gd{border:1px solid var(--card-b);border-left:3px solid var(--gold);border-radius:6px;background:var(--card)}
+.gd summary{display:flex;flex-direction:column;gap:2px;padding:14px 18px;cursor:pointer;list-style:none;font-weight:600}
+.gd summary::-webkit-details-marker{display:none}
+.gd summary::after{content:"+";position:absolute;right:18px;font-family:var(--display);font-size:26px;line-height:1;color:var(--blue)}
+.gd{position:relative}
+.gd[open] summary::after{content:"\2212"}
+.gd summary:hover{background:var(--bg-3)}
+.gdbody{padding:4px 18px 18px;font-size:16px;color:var(--fg);display:grid;gap:10px}
+/* Contact */
+.copyrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
+.copyrow code{font-family:var(--mono);font-size:14px;overflow-wrap:anywhere;background:var(--bg-3);padding:6px 10px;border-radius:8px}
+footer{padding:30px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);color:var(--fg-2);font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+
+/* Details drawer */
+.drawer{position:fixed;top:calc(58px + env(safe-area-inset-top,0px));right:0;bottom:0;width:min(380px,100%);z-index:19;background:var(--bg-2);border-left:1px solid var(--line);padding:18px 20px calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;box-shadow:-10px 0 40px rgba(0,0,0,.25)}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.dhead b{font-family:var(--display);font-size:24px}
+.drawer label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-2);margin-top:10px}
+.drawer input{display:block;width:100%;margin-top:4px;font:500 16px var(--body);color:var(--fg);background:var(--bg-3);border:1px solid var(--line);border-radius:4px;padding:10px 12px}
+.drawer input:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.hero h1{white-space:nowrap}
+.hero h1 .name{display:inline}
+
+.sig{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:2px}
+.sig-name{font-family:"Caveat","Segoe Script","Bradley Hand",cursive;font-size:38px;line-height:1.1;color:var(--accent);transform:rotate(-2deg);transform-origin:left;display:inline-block}
+/* Editing */
+body.editing [data-edit]{outline:1px dashed var(--edit);outline-offset:3px;border-radius:4px;cursor:text}
+.ph{color:var(--edit)}
+body.editing .ph{color:inherit}
+
+/* Reveal */
+.rv{transition:transform .8s cubic-bezier(.2,.8,.2,1),opacity .8s;transition-delay:var(--d,0s)}
+.rv.pre{transform:translateY(28px);opacity:.001}
+section{transition:opacity .5s}
+section.jump .wrap{animation:enter .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes enter{from{opacity:0;transform:translateY(24px) scale(.985)}to{opacity:1;transform:none}}
+.hero .wrap > *{animation:enter .9s cubic-bezier(.2,.8,.2,1) both}
+.hero .wrap > :nth-child(2){animation-delay:.08s}.hero .wrap > :nth-child(3){animation-delay:.16s}.hero .wrap > :nth-child(4){animation-delay:.24s}.hero .wrap > :nth-child(5){animation-delay:.32s}.hero .wrap > :nth-child(6){animation-delay:.4s}
+@media (prefers-reduced-motion:reduce){
+  .rv,.rv.pre{transform:none;opacity:1;transition:none}
+  section.jump .wrap,.hero .wrap > *{animation:none}
+  .meter .bar i{animation:none}
+  .type .cur{animation:none}
+  html{scroll-behavior:auto}
+}
+@media (max-width:640px){
+  nav .brand span{display:none}
+}
+</style>
+</head>
+<body class="submit">
+
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">BAENG<b>101</b> <span>· Portfolio</span></a>
+    <div class="links" id="links">
+      <a href="#about">About</a><a href="#education">Education</a><a href="#skills">Skills</a><a href="#goals">Goals</a><a href="#vocab">Vocab</a><a href="#swot">SWOT</a><a href="#reflection">Reflection</a>
+    </div>
+    <button class="ibtn" id="detBtn" type="button">Details</button>
+    <button class="ibtn" id="editBtn" type="button">Edit</button>
+    <button class="ibtn" id="themeBtn" type="button" aria-label="Toggle theme">☾</button>
+  </div>
+</nav>
+<div class="progress" id="prog"></div>
+<div class="drawer" id="drawer" hidden>
+  <div class="dhead"><b>My details</b><button class="ibtn" type="button" id="detClose">Close</button></div>
+  <p class="mono" style="margin-bottom:12px">One line each. These fill in every place on the page as you type.</p>
+  <label>Full name<input type="text" id="f-name" data-f="name" value="Yalamanchili Sai Sanjay" autocomplete="off"></label>
+  <label>Register number<input type="text" id="f-reg" data-f="reg" value="26BCE0713" autocomplete="off"></label>
+  <label>Programme<input type="text" id="f-prog" data-f="prog" value="B.Tech CSE" autocomplete="off"></label>
+  <label>Branch (full name)<input type="text" id="f-branch" data-f="branch" value="Computer Science Engineering" autocomplete="off"></label>
+  <label>Faculty<input type="text" id="f-faculty" data-f="faculty" placeholder="Prof. Saraswathy" autocomplete="off"></label>
+  <label>Submission date<input type="text" id="f-date" data-f="date" placeholder="7 Oct 2026" autocomplete="off"></label>
+  <label>VIT email<input type="text" id="f-email" data-f="email" value="yalamanchili.sanjay2026@vitstudent.ac.in" autocomplete="off"></label>
+  <label>Home town<input type="text" id="f-home" data-f="home" value="Vijayawada, Andhra Pradesh" autocomplete="off"></label>
+  <label>School<input type="text" id="f-school" data-f="school" value="Narayana e-Techno School" autocomplete="off"></label>
+  <p class="mono" style="margin-top:14px">For longer text (about me, goals, reflection) use the Edit button instead.</p>
+</div>
+<div class="hint">Edit mode on. Click any dashed box and type. Red text is a placeholder to replace. Saved in this browser.</div>
+
+<header class="hero" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <span class="eyebrow mono"><i></i> VIT Vellore · Fall 2026-27 · Faculty: <span data-field="faculty">Prof. Saraswathy</span></span>
+    <h1>Hi, I'm <span class="name" data-field="name">Yalamanchili Sai Sanjay</span></h1>
+    <div class="type" id="type" aria-live="polite"></div>
+    <p class="lead" data-edit="lead">This is my English language portfolio for BAENG 101. It collects who I am, what I can do, and the writing and speaking work I produced this semester, so you can see the progress and not just the result.</p>
+    <div class="cta">
+      <a class="btn primary" href="#goals">My goals</a>
+      <a class="btn" href="#vocab">Words I learnt</a>
+    </div>
+    <div class="facts">
+      <div class="fact"><b data-field="reg">26BCE0713</b><span class="mono">Register no.</span></div>
+      <div class="fact"><b data-field="prog">B.Tech CSE</b><span class="mono">Programme</span></div>
+            <div class="fact"><b data-field="date">7 Oct 2026</b><span class="mono">Submitted</span></div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">01</span><h2>About me</h2></div>
+    <div class="two">
+      <div class="stack rv">
+        <p style="font-size:19px" data-edit="about1">I am <span data-field="name">Yalamanchili Sai Sanjay</span>, a first-year engineering student at Vellore Institute of Technology. I grew up in <span data-field="home">Vijayawada</span> and studied at <span data-field="school">Narayana e-Techno School</span>, Mumbai, where calculus first pulled me towards engineering.</p>
+        <p data-edit="about2">People describe me as analytical, persistent and curious. I joined this course because I want to sound as confident in a viva or a group discussion as I do among friends.</p>
+      </div>
+      <div class="card rv">
+        <h3>Quick facts</h3>
+        <ul data-edit="facts">
+          <li><b>Hometown:</b> <span data-field="home">Vijayawada, Andhra Pradesh</span></li>
+          <li><b>Languages:</b> Telugu, English, Hindi</li>
+          <li><b>Hobbies:</b> reading, swimming, gaming</li>
+          <li><b>Currently reading:</b> <i>The Lord of the Rings</i></li>
+          <li><b>Goal this semester:</b> deliver one talk without reading from slides</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">02</span><h2>Education</h2></div>
+    <div class="tl rv">
+      <div class="row"><span class="yr" data-edit="e1y">2026 – 2030</span><b>B.Tech, <span data-field="branch">Computer Science Engineering</span></b><br><span data-edit="e1d">Vellore Institute of Technology, Vellore. First year, Fall semester 2026-27.</span></div>
+      <div class="row"><span class="yr" data-edit="e2y">2026</span><b>Class XII, <span data-edit="e2b">CBSE</span></b><br><span data-edit="e2d">Narayana e-Techno School, Mumbai. Physics, Chemistry, Mathematics, Python.</span></div>
+      <div class="row"><span class="yr" data-edit="e3y">2024</span><b>Class X, <span data-edit="e3b">CBSE</span></b><br><span data-edit="e3d">Narayana e-Techno School, Mumbai.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">03</span><h2>Skills</h2></div>
+    <div class="two">
+      <div class="card rv">
+        <h3>Communication (self-rated)</h3>
+        <div class="meter"><div class="lbl"><span>Writing</span><span>75%</span></div><div class="bar"><i style="--v:75%"></i></div></div>
+        <div class="meter"><div class="lbl"><span>Speaking</span><span>65%</span></div><div class="bar"><i style="--v:65%"></i></div></div>
+        <div class="meter"><div class="lbl"><span>Listening</span><span>85%</span></div><div class="bar"><i style="--v:85%"></i></div></div>
+        <div class="meter"><div class="lbl"><span>Reading</span><span>90%</span></div><div class="bar"><i style="--v:90%"></i></div></div>
+        <div class="meter"><div class="lbl"><span>Presentation</span><span>60%</span></div><div class="bar"><i style="--v:60%"></i></div></div>
+        <p class="mono" style="margin-top:12px">Ratings on 7 Oct 2026. To be revised at semester end.</p>
+      </div>
+      <div class="stack rv">
+        <div class="card">
+          <h3>Technical · Mathematics</h3>
+          <div class="chips" data-edit="tech"><span class="chip">Calculus</span><span class="chip">Linear algebra</span><span class="chip">Probability and statistics</span><span class="chip">Discrete mathematics</span><span class="chip">Mathematical modelling</span><span class="chip">Problem solving</span></div>
+        </div>
+        <div class="card">
+          <h3>Personal</h3>
+          <div class="chips" data-edit="soft"><span class="chip">Analytical</span><span class="chip">Persistent</span><span class="chip">Curious</span><span class="chip">Teamwork</span><span class="chip">Time management</span></div>
+        </div>
+        <div class="card">
+          <h3>Milestones</h3>
+          <ul data-edit="ach">
+            <li>Admitted to B.Tech Computer Science Engineering at VIT Vellore, 2026.</li>
+            <li>Completed Class XII (CBSE) with Python as an elective alongside Physics, Chemistry and Mathematics.</li>
+            <li>Reading <i>The Lord of the Rings</i> cover to cover, my longest book so far.</li>
+            <li>Regular swimmer; aiming to keep it up at the campus pool this year.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="goals">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">04</span><h2>Semester goals</h2></div>
+    <p class="rv" style="margin-bottom:18px;color:var(--fg-2)">What I want to be able to do by the end of BAENG 101. Tick each one off as it happens.</p>
+    <div class="two">
+      <div class="card rv">
+        <ul class="goals" id="goalList">
+          <li><label><input type="checkbox" id="g1"><span data-edit="gl1">Deliver one presentation without reading from slides.</span></label></li>
+          <li><label><input type="checkbox" id="g2"><span data-edit="gl2">Write a formal email or letter in the correct format without a reference.</span></label></li>
+          <li><label><input type="checkbox" id="g3"><span data-edit="gl3">Speak for two minutes on any topic with a clear beginning, middle and end.</span></label></li>
+          <li><label><input type="checkbox" id="g4"><span data-edit="gl4">Use ten new words from my flashcards in real conversation.</span></label></li>
+          <li><label><input type="checkbox" id="g5"><span data-edit="gl5">Take part in one group discussion and summarise it in writing afterwards.</span></label></li>
+          <li><label><input type="checkbox" id="g6"><span data-edit="gl6">Finish <i>The Lord of the Rings</i> and write a 200-word review.</span></label></li>
+        </ul>
+      </div>
+      <div class="card rv goalStat">
+        <span class="mono">Progress</span>
+        <div class="big"><span id="goalPct">0%</span></div>
+        <div class="meter"><div class="bar"><i id="goalBar" style="--v:0%;animation:none"></i></div></div>
+        <p id="goalMsg" style="margin-top:12px;color:var(--fg-2)">Nothing ticked yet. The semester is young.</p>
+        <h3 style="margin-top:22px">Long term</h3>
+        <ul data-edit="g2l">
+          <li>Build a strong CGPA and secure an internship by third year.</li>
+          <li>Work on software that people actually use.</li>
+          <li>Become someone who can explain a technical idea to any audience.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vocab">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">05</span><h2>Words I learnt</h2></div>
+    <p class="rv" style="margin-bottom:18px;color:var(--fg-2)">Tap a card to flip it. Words collected from readings and class discussions this semester.</p>
+    <div class="deck rv" id="deck">
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">adjective</span><span class="w" data-edit="v1w">Perspicacious</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v1d">Having a sharp, ready understanding of things. "A perspicacious reader spots the flaw in paragraph two."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">noun</span><span class="w" data-edit="v2w">Equivocation</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v2d">Deliberately vague language used to avoid committing to a position. "The reply was pure equivocation; it answered nothing."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">verb</span><span class="w" data-edit="v3w">Extrapolate</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v3d">To extend known data or a trend to estimate what lies beyond it. "From three readings we can extrapolate the curve."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">noun</span><span class="w" data-edit="v4w">Verisimilitude</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v4d">The appearance of being true or real. "Good technical writing gains verisimilitude from precise numbers."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">adjective</span><span class="w" data-edit="v5w">Obsequious</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v5d">Excessively eager to please or obey. "An obsequious reply flatters the reader and says nothing."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">noun</span><span class="w" data-edit="v6w">Sophistry</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v6d">A clever argument that sounds convincing but is actually false. "The debate was won on sophistry, not evidence."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">verb</span><span class="w" data-edit="v7w">Ameliorate</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v7d">To make a bad situation better. "Clear instructions ameliorate most confusion in a team."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">adjective</span><span class="w" data-edit="v8w">Sesquipedalian</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v8d">Using long words; a long word itself. "A sesquipedalian essay impresses nobody who has to read it."</span></div></div></button>
+      <button class="fc" type="button"><div class="in"><div class="f"><span class="mono">noun</span><span class="w" data-edit="v9w">Circumlocution</span></div><div class="b"><span class="mono">meaning</span><span class="d" data-edit="v9d">Using many words where fewer would do. "Cut the circumlocution and state the result in one line."</span></div></div></button>
+    </div>
+  </div>
+</section>
+
+<section id="swot">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">06</span><h2>Self-assessment</h2></div>
+    <p class="rv" style="margin-bottom:18px;color:var(--fg-2)">Click a card to expand it.</p>
+    <div class="swot rv">
+      <button type="button"><div class="k">S</div><div class="n">Strengths</div><div class="x" data-edit="s1">I read widely and pick up vocabulary quickly. I am comfortable speaking one-to-one.</div></button>
+      <button type="button"><div class="k">W</div><div class="n">Weaknesses</div><div class="x" data-edit="s2">I rush when speaking to a large group and drop the structure I had planned.</div></button>
+      <button type="button"><div class="k">O</div><div class="n">Opportunities</div><div class="x" data-edit="s3">Club recruitments, class presentations and hostel debates give me weekly chances to practise.</div></button>
+      <button type="button"><div class="k">T</div><div class="n">Threats</div><div class="x" data-edit="s4">A heavy first-year timetable can crowd out practice unless I schedule it.</div></button>
+    </div>
+  </div>
+</section>
+
+<section id="reflection">
+  <div class="wrap">
+    <div class="head rv"><span class="mono">07</span><h2>Reflection on the course</h2></div>
+    <div class="two">
+      <div class="stack rv">
+        <p data-edit="r1">Before BAENG 101 I believed that knowing grammar was the same as communicating well. The first few weeks showed me the difference. The course treats English as a tool with a purpose: to inform, to request, to persuade or to present. Each activity had a real audience in mind, and that changed how I prepared.</p>
+        <p data-edit="r2">The session I remember most is the group discussion on whether YouTube is a reliable source of income. I opened by defining what "reliable" should mean, consistency, stability and long-term sustainability, and then argued for the motion with examples of creators who have turned the platform into full-time careers. It stayed with me because the room pushed back well: on algorithm changes, on sponsors walking away, on how fast trends fade. I had to defend a position in real time instead of from notes, and by the end I agreed with some of the other side.</p>
+        <p data-edit="r4">Under <span data-edit="facname">Saraswathy ma'am</span>'s guidance I learnt to open a discussion by framing the terms, so the whole group argues about the same thing, and to concede a good point without giving up my own. I also noticed that the quietest members had the sharpest observations when they were given room, which changed how I think about leading a discussion.</p>
+        <p data-edit="r3">By the end of the semester I want this portfolio to show a clear line from where I started to where I have reached, in both writing and speaking.</p>
+        <details class="gd">
+          <summary><span class="mono">Assignment 04</span><span>Read my group discussion summary</span></summary>
+          <div class="gdbody" data-edit="gd">
+            <p><b>Topic:</b> Is YouTube a reliable source of income?</p>
+            <p>The group was divided on the topic, but both sides presented thoughtful arguments supported by logic, research and real-world examples. MrBeast's remarkable success was referenced repeatedly throughout the discussion as a benchmark for what the platform can offer.</p>
+            <p>I opened the discussion by defining what makes an income source "reliable" and the criteria it should satisfy, such as consistency, stability and long-term sustainability. As I supported the motion, I argued that YouTube is a credible career path, and backed my position with examples of several creators who have built successful, full-time careers on the platform. The discussion was balanced, and every member had an equal opportunity to present their views.</p>
+            <p>Some members highlighted the risks of depending on YouTube as a primary source of livelihood, while others explained how creators and their teams generate revenue beyond ad income, through brand deals, sponsorships and merchandise. We also compared the security of a traditional 9-to-5 job with the flexibility and uncertainty of full-time content creation.</p>
+            <p>The debate also went beyond finances. Several members examined how a creator's personal identity and beliefs can shape their income: openly sharing opinions can build a loyal community, but it can also alienate sponsors or parts of the audience. We also discussed how YouTube's algorithm heavily controls a channel's visibility, so even a small change in how videos are recommended can cause views, and therefore earnings, to drop suddenly. Finally, we considered how audience preferences shift over time, as trends fade quickly and creators must constantly adapt to stay relevant. Many of us agreed that these factors make YouTube income less predictable than it appears.</p>
+            <p>To conclude, each of us was asked what kind of channel we would start ourselves. The ideas were diverse: some suggested educational channels on history, mathematics or physics; one member chose sports content; another proposed documenting their journey of learning new skills; and one member suggested vlogging everyday life at VIT.</p>
+          </div>
+        </details>
+      </div>
+      <div class="card rv">
+        <h3>Contact</h3>
+        <p>VIT email</p>
+        <div class="copyrow"><code id="mail" data-field="email">yalamanchili.sanjay2026@vitstudent.ac.in</code><button class="ibtn" type="button" id="copyBtn">Copy</button></div>
+        <p style="margin-top:14px">Declaration</p>
+        <p style="color:var(--fg-2);font-size:15px" data-edit="decl">I declare that the work in this portfolio is my own.</p>
+        <div class="sig"><span class="sig-name">Sanjay</span><span class="mono">Signature · <span data-field="date">7 Oct 2026</span></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>BAENG 101 · Vellore Institute of Technology · Fall 2026-27</span>
+    <span>Built as a course portfolio · <button class="ibtn" type="button" id="resetBtn">Reset to template</button></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var body=document.body, root=document.documentElement;
+
+  /* Theme toggle */
+  var themeBtn=$('#themeBtn');
+  function curDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark'; return window.matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){themeBtn.textContent=curDark()?'☀':'☾';}
+  themeBtn.addEventListener('click',function(){
+    var next=curDark()?'light':'dark'; root.setAttribute('data-theme',next);
+    try{localStorage.setItem('baeng-theme',next);}catch(e){}
+    paintTheme(); drawSky();
+  });
+  try{var st=localStorage.getItem('baeng-theme'); if(st) root.setAttribute('data-theme',st);}catch(e){}
+  paintTheme();
+
+  /* Edit mode + persistence */
+  var KEY='baeng101-portfolio-v3';
+  var nodes=$$('[data-edit]'), defaults={};
+  nodes.forEach(function(n){defaults[n.getAttribute('data-edit')]=n.innerHTML;});
+  function save(){try{var o={};nodes.forEach(function(n){o[n.getAttribute('data-edit')]=n.innerHTML;});localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}}
+  function load(){try{var r=localStorage.getItem(KEY);if(!r)return;var s=JSON.parse(r);nodes.forEach(function(n){var k=n.getAttribute('data-edit');if(s[k]!=null)n.innerHTML=s[k];});}catch(e){}}
+  function setEditing(on){
+    body.classList.toggle('editing',on);
+    nodes.forEach(function(n){n.contentEditable=on?'true':'false';});
+    $('#editBtn').classList.toggle('on',on); $('#editBtn').textContent=on?'Done':'Edit';
+  }
+  nodes.forEach(function(n){
+    n.addEventListener('input',save);
+    n.addEventListener('focus',function(){$$('.ph',n).forEach(function(p){p.classList.remove('ph');}); if(n.classList.contains('ph')){n.classList.remove('ph'); if(/^\[.*\]$/.test(n.textContent.trim())){var r=document.createRange();r.selectNodeContents(n);var sl=window.getSelection();sl.removeAllRanges();sl.addRange(r);}}});
+    // Stop clicks inside editable text from flipping cards / toggling SWOT while editing.
+    n.addEventListener('click',function(e){ if(body.classList.contains('editing')) e.stopPropagation(); });
+  });
+  $('#editBtn').addEventListener('click',function(){setEditing(!body.classList.contains('editing'));});
+  $('#resetBtn').addEventListener('click',function(){nodes.forEach(function(n){n.innerHTML=defaults[n.getAttribute('data-edit')];});try{localStorage.removeItem(KEY);localStorage.removeItem(FKEY);}catch(e){} $$('.drawer input').forEach(function(i){i.value='';}); finputs.forEach(function(i){applyField(i.getAttribute('data-f'),'');});});
+  load(); setEditing(false);
+
+
+  /* Details drawer: single-line fields that fill every matching spot */
+  var FKEY='baeng101-fields-v2', drawer=$('#drawer'), finputs=$$('.drawer input');
+  function applyField(k,v){
+    $$('[data-field="'+k+'"]').forEach(function(el){
+      var d=el.getAttribute('data-default'); if(d==null){el.setAttribute('data-default',el.textContent);}
+      if(v){el.textContent=v; el.classList.remove('ph');}
+      else{el.textContent=el.getAttribute('data-default'); if(/^\[.*\]$/.test(el.textContent.trim())) el.classList.add('ph');}
+    });
+    if(k==='name') fitName();
+  }
+  function fitName(){
+    var h=$('.hero h1'); if(!h) return; h.style.fontSize='';
+    var max=parseFloat(getComputedStyle(h).fontSize), w=h.parentNode.clientWidth, guard=0;
+    while(h.scrollWidth>w && max>22 && guard<40){max-=2; h.style.fontSize=max+'px'; guard++;}
+  }
+  function saveFields(){try{var o={};finputs.forEach(function(i){o[i.getAttribute('data-f')]=i.value;});localStorage.setItem(FKEY,JSON.stringify(o));}catch(e){}}
+  finputs.forEach(function(i){
+    i.addEventListener('input',function(){applyField(i.getAttribute('data-f'),i.value.replace(/\s+/g,' ').trim()); saveFields(); save();});
+    i.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault(); var n=finputs[finputs.indexOf(i)+1]; if(n)n.focus(); else i.blur();}});
+  });
+  try{var fs=JSON.parse(localStorage.getItem(FKEY)||'{}'); finputs.forEach(function(i){var k=i.getAttribute('data-f'); if(fs[k]){i.value=fs[k]; applyField(k,fs[k].trim());}});}catch(e){}
+  $('#detBtn').addEventListener('click',function(){drawer.hidden=!drawer.hidden; $('#detBtn').classList.toggle('on',!drawer.hidden); if(!drawer.hidden) $('#f-name').focus();});
+  $('#detClose').addEventListener('click',function(){drawer.hidden=true; $('#detBtn').classList.remove('on');});
+  window.addEventListener('resize',fitName); fitName();
+
+  /* Single-line inline fields: Enter never inserts a line break in short elements */
+  nodes.forEach(function(n){
+    var block=/^(DIV|UL|P)$/.test(n.tagName);
+    n.addEventListener('keydown',function(e){if(e.key==='Enter'&&!block)e.preventDefault();});
+    n.addEventListener('paste',function(e){
+      if(block) return; e.preventDefault();
+      var t=(e.clipboardData||window.clipboardData).getData('text').replace(/\s+/g,' ');
+      document.execCommand('insertText',false,t);
+    });
+  });
+
+  /* Typewriter */
+  var phrases=['first-year engineering student','learning to write with clarity','practising to speak with confidence','building a habit of listening well','BAENG 101, VIT Vellore'];
+  var tEl=$('#type'), pi=0, ci=0, del=false, reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function tick(){
+    var p=phrases[pi];
+    if(!del){ci++; if(ci>p.length){del=true; setTimeout(tick,1400); render(); return;}}
+    else{ci--; if(ci===0){del=false; pi=(pi+1)%phrases.length;}}
+    render(); setTimeout(tick, del?38:70);
+  }
+  function render(){tEl.innerHTML=phrases[pi].slice(0,ci)+'<span class="cur"></span>';}
+  if(reduce){tEl.textContent=phrases[0];} else tick();
+
+  /* Scroll progress + scroll-spy */
+  var prog=$('#prog'), links=$$('#links a'), secs=links.map(function(a){return $(a.getAttribute('href'));});
+  function onScroll(){
+    var h=root.scrollHeight-window.innerHeight; prog.style.width=(h>0?(window.scrollY/h*100):0)+'%';
+    var y=window.scrollY+120, cur=-1;
+    secs.forEach(function(s,i){if(s&&s.offsetTop<=y)cur=i;});
+    links.forEach(function(a,i){a.classList.toggle('active',i===cur);});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* Section transitions: content lifts in whenever a section enters, and a nav jump replays the entrance */
+  var allSecs=$$('section');
+  if(!reduce && 'IntersectionObserver' in window){
+    $$('.rv').forEach(function(el,i){var r=el.getBoundingClientRect(); if(r.top>window.innerHeight*.9) el.classList.add('pre');});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      var el=e.target;
+      if(e.isIntersecting){el.classList.remove('pre');}
+      else if(e.boundingClientRect.top>window.innerHeight){el.classList.add('pre');}  // below the fold: arm it to replay on return
+      else{el.classList.remove('pre');}  // scrolled past: never leave it hidden
+    });},{rootMargin:'0px 0px -10% 0px',threshold:.05});
+    $$('.rv').forEach(function(el){io.observe(el);});
+    // Stagger siblings inside the same section
+    allSecs.forEach(function(sec){$$('.rv',sec).forEach(function(el,i){el.style.setProperty('--d',(i*.08)+'s');});});
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle('in',e.isIntersecting);});},{threshold:.2});
+    allSecs.forEach(function(sec){so.observe(sec);});
+  } else { allSecs.forEach(function(sec){sec.classList.add('in');}); }
+  function jumpTo(id){
+    var sec=document.getElementById(id); if(!sec) return;
+    if(!reduce){
+      sec.classList.remove('jump'); void sec.offsetWidth; sec.classList.add('jump');
+      $$('.rv',sec).forEach(function(el){el.classList.remove('pre');});
+      setTimeout(function(){sec.classList.remove('jump');},1000);
+    }
+  }
+  $$('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){
+    var id=a.getAttribute('href').slice(1), sec=document.getElementById(id); if(!sec) return;
+    e.preventDefault();
+    var top=sec.getBoundingClientRect().top+window.scrollY-(id==='top'?0:64);
+    window.scrollTo({top:top,behavior:reduce?'auto':'smooth'});
+    try{history.replaceState(null,'','#'+id);}catch(x){}
+    if(id!=='top') setTimeout(function(){jumpTo(id);},80);
+  });});
+
+  /* Goals tracker */
+  var GKEY='baeng101-goals-v1', gboxes=$$('#goalList input');
+  function paintGoals(){
+    var done=gboxes.filter(function(b){return b.checked;}).length, pct=Math.round(done/gboxes.length*100);
+    $('#goalPct').textContent=pct+'%'; $('#goalBar').style.setProperty('--v',pct+'%');
+    $('#goalMsg').textContent= done===0?'Nothing ticked yet. The semester is young.' : done===gboxes.length?'All six done. Time to set harder ones.' : done+' of '+gboxes.length+' done. Keep going.';
+    try{localStorage.setItem(GKEY,JSON.stringify(gboxes.map(function(b){return b.checked;})));}catch(e){}
+  }
+  try{var gs=JSON.parse(localStorage.getItem(GKEY)||'[]'); gboxes.forEach(function(b,i){b.checked=!!gs[i];});}catch(e){}
+  gboxes.forEach(function(b){b.addEventListener('change',paintGoals);});
+  paintGoals();
+
+  /* Flashcards */
+  $$('.fc').forEach(function(c){c.addEventListener('click',function(){if(!body.classList.contains('editing'))c.classList.toggle('flipped');});});
+
+  /* SWOT */
+  $$('.swot button').forEach(function(b){b.addEventListener('click',function(){if(!body.classList.contains('editing'))b.classList.toggle('open');});});
+
+  /* Copy email */
+  $('#copyBtn').addEventListener('click',function(){
+    var txt=$('#mail').textContent.trim(), b=this;
+    function done(ok){b.textContent=ok?'Copied':'Select it'; setTimeout(function(){b.textContent='Copy';},1500);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(function(){done(true);},function(){sel();done(false);});}else{sel();done(false);}
+    function sel(){var r=document.createRange();r.selectNodeContents($('#mail'));var s=window.getSelection();s.removeAllRanges();s.addRange(r);}
+  });
+
+  /* Constellation canvas */
+  var cv=$('#sky'), cx=cv.getContext('2d'), pts=[], W=0,H=0, mouse={x:-1e4,y:-1e4};
+  function size(){var r=cv.parentNode.getBoundingClientRect(); W=cv.width=Math.floor(r.width); H=cv.height=Math.floor(r.height);
+    pts=[]; var n=Math.min(90,Math.floor(W*H/14000)); for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35});}
+  function css(v){return getComputedStyle(root).getPropertyValue(v).trim();}
+  var colDot, colLine;
+  function drawSky(){colDot=css('--gold'); colLine=css('--blue');}
+  function frame(){
+    cx.clearRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){var p=pts[i]; p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>W)p.vx*=-1; if(p.y<0||p.y>H)p.vy*=-1;
+      var dm=Math.hypot(p.x-mouse.x,p.y-mouse.y); if(dm<140){p.x+=(p.x-mouse.x)/dm*.6; p.y+=(p.y-mouse.y)/dm*.6;}
+      cx.fillStyle=colDot; cx.globalAlpha=.55; cx.beginPath(); cx.arc(p.x,p.y,1.6,0,6.283); cx.fill();
+      for(var j=i+1;j<pts.length;j++){var q=pts[j], d=Math.hypot(p.x-q.x,p.y-q.y); if(d<120){cx.globalAlpha=(1-d/120)*.18; cx.strokeStyle=colLine; cx.lineWidth=1; cx.beginPath(); cx.moveTo(p.x,p.y); cx.lineTo(q.x,q.y); cx.stroke();}}
+    }
+    cx.globalAlpha=1;
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  cv.parentNode.addEventListener('mousemove',function(e){var r=cv.getBoundingClientRect(); mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;});
+  cv.parentNode.addEventListener('mouseleave',function(){mouse.x=-1e4;mouse.y=-1e4;});
+  window.addEventListener('resize',size);
+  size(); drawSky(); frame();
+})();
+</script>
+
+</body>
+</html>
